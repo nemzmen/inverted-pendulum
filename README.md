@@ -1,6 +1,6 @@
 # inverted-pendulum
 
-## INSTALACJA NARZĘDZI
+## INSTALACJA NARZĘDZI (WINDOWS)
 
 https://git-scm.com/downloads (git) <br />
 https://code.visualstudio.com/ (vs code) <br />
@@ -17,7 +17,7 @@ python -V <br />
 pip -V <br />
 Python <br />
 
-## PROJEKT ZOSTAŁ ZAINICJOWANY W OPARCIU O SERIĘ KOMEND I ZMIAN
+## PROJEKT ZOSTAŁ ZAINICJOWANY W OPARCIU O KOMENDY, ZMINY (WINDOWS)
 
 django-admin startproject project_name <br />
 cd project_name <br />
