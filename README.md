@@ -2,10 +2,9 @@
 
 ### ODPALENIE PROJEKTU
 
-##### 1. INSTALACJA NARZĘDZI GŁÓWNYCH (WINDOWS)
+##### 1) INSTALACJA NARZĘDZI GŁÓWNYCH (WINDOWS)
 
 https://git-scm.com/downloads (git) <br />
-https://code.visualstudio.com/ (vs code - opcjonalnie) <br />
 
 https://aimweb.pl/jak-zainstalowac-nodejs-i-npm/ (node + npm) <br />
 https://nodejs.org/en/ <br />
@@ -19,7 +18,7 @@ python -V <br />
 pip -V <br />
 Python <br />
 
-##### 2. POBRANIE I SKONFIGUROWANIE PROJEKTU
+##### 2) POBRANIE I SKONFIGUROWANIE PROJEKTU
 
 git clone https://github.com/nemzmen/inverted-pendulum.git <br />
 
