@@ -1,6 +1,6 @@
 # inverted-pendulum
 
-## INSTALACJA NARZĘDZI (WINDOWS)
+### INSTALACJA NARZĘDZI GŁÓWNYCH (WINDOWS)
 
 https://git-scm.com/downloads (git) <br />
 https://code.visualstudio.com/ (vs code) <br />
@@ -17,7 +17,7 @@ python -V <br />
 pip -V <br />
 Python <br />
 
-## PROJEKT ZOSTAŁ ZAINICJOWANY W OPARCIU O KOMENDY, ZMINY (WINDOWS)
+### PROJEKT ZOSTAŁ ZAINICJOWANY POPRZEZ NASTĘPUJĄCE KOMENDY I ZMIANY (WINDOWS)
 
 django-admin startproject project_name <br />
 cd project_name <br />
@@ -49,7 +49,7 @@ npm run dev <br />
 cd.. <br />
 python .\manage.py runserver <br />
 
-## DOSTĘP DO SERWERA W LOKALNEJ SIECI
+### DOSTĘP DO SERWERA W LOKALNEJ SIECI
 
 uzyskai adres IPv4 hosta (ipconfig, ifconfig) <br />
 project_name/settings.py -> ALLOWED_HOSTS -> dodaj do tablicy np. '192.168.1.101' <br />
