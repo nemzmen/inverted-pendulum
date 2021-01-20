@@ -29,6 +29,7 @@ python .\manage.py migrate <br />
 python .\manage.py runserver <br />
 +- project_name/settings.py (added rest_framework) <br />
 ++ api/urls.py, serializers.py... <br />
+
 django-admin startapp frontend <br />
 cd frontend <br />
 npm init -y <br />
@@ -46,6 +47,7 @@ npm i @material-ui/lab <br />
 ++ webpack.config.js <br />
 +- frontend/package.json, urls.js, views.js, src, static, templates... <br />
 npm run dev <br />
+
 cd.. <br />
 python .\manage.py runserver <br />
 
