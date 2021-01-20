@@ -21,7 +21,7 @@ Python
 ----------------------------------------------------------
 ## PROJEKT ZOSTAŁ ZAINICJOWANY W OPARCIU O SERIĘ KOMEND I ZMIAN
 
-django-admin startproject project_name
+django-admin startproject project_name /n \n </b>
 cd project_name
 django-admin startapp api
 +- project_name/settings.py (added application)
