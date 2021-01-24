@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Sample
+from .models import NoiseModel
 
 
-class SampleSerializer(serializers.ModelSerializer):
+class NoiseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Sample
-        fields = ('id', 'sample_field')
+        model = NoiseModel
+        fields = ('variance', 'test')

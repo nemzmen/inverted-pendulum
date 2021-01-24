@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import SampleView
+from .views import PostNoiseView, GetNoiseView
 
 
 urlpatterns = [
-  path('sample', SampleView.as_view())
+  path('create', PostNoiseView.as_view()),
+  path('noise', GetNoiseView.as_view())
 ]
