@@ -22,17 +22,18 @@ Python <br />
 
 git clone https://github.com/nemzmen/inverted-pendulum.git <br />
 
-<b>w konsoli nr 1:</b> <br />
+<b>w konsoli nr 1: (wymagane by wprowadzać zmiany w aplikacji frontend)</b> <br />
 cd frontend <br />
 npm install <br />
 npm run dev <br />
 
-<b>w konsoli nr 2:</b> <br />
+<b>w konsoli nr 2: (uruchomienie serwera)</b> <br />
 python .\manage.py makemigrations <br />
 python .\manage.py migrate <br />
 python .\manage.py runserver <br />
 
 pod adresem http://127.0.0.1:8000/ będzie dostępna główna strona projektu
+wprowadzając zmiany w aplikacji frontend może być konieczne odświeżenie strony wraz z usunięciem cache (ctrl + F5)
 
 ### PROJEKT ZOSTAŁ ZAINICJOWANY POPRZEZ NASTĘPUJĄCE KOMENDY I ZMIANY (WINDOWS)
 
