@@ -27,7 +27,7 @@ class Signal:
             data_array = numpy.random.normal(loc=mean, scale=variance, size=size)
 
         if noise_type == noise_types['pareto']:
-            data_array = (numpy.random.pareto(a=3, size=size) + mean) * variance
+            data_array = (numpy.random.pareto(a=2.5, size=size) * variance) + mean
         
         if noise_type == noise_types['sum']:
             normal_signal = numpy.random.normal(loc=mean, scale=variance, size=size)

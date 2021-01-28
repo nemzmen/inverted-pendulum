@@ -87,7 +87,7 @@ export default class HomePage extends Component {
       this.setState({chartData: response.data.array.signal});
     } else {
       this.setState({alertVisible: true});
-      setTimeout(this.hideErrorAlert, 3000)
+      setTimeout(this.hideErrorAlert, 4000)
     }
   }
 
@@ -172,8 +172,8 @@ export default class HomePage extends Component {
 
   static defaultProps = {
     sizeValue: '1000',
-    meanValue: '0.0',
-    varianceValue: '1.0',
+    meanValue: '0',
+    varianceValue: '1',
     noiseTypeValue: noiseTypeCurrencies[0].value,
     alertVisible: false,
     chartData: defaultChartData,
