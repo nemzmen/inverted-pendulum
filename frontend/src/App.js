@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MainView from "./MainView";
+import HomePage from "./pages/HomePage";
 
 
 export default class App extends Component {
@@ -9,8 +9,8 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="center">
-        <MainView />
+      <div className="absolute-center">
+        <HomePage />
       </div>
     );
   }

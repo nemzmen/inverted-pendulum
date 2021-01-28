@@ -4,7 +4,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
 #main {
   position: fixed;
   width: 100%;
@@ -12,15 +11,45 @@ body {
   left: 0;
   top: 0;
 }
-
 #app {
   width: 100%;
   height: 100%;
 }
-
-.center {
+.absolute-center {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.margin-6 {
+  margin: 6px;
+}
+.margin-12 {
+  margin: 12px;
+}
+.padding-6 {
+  padding: 12px;
+}
+.padding-12 {
+  padding: 12px;
+}
+.buttons-container {
+  width: 250px;
+}
+.button-background {
+  border-radius: 4px;
+  background-color: white;
+}
+.main-container {
+  padding: 12px 12px 0 12px;
+  background-color: powderblue;
+}
+.white {
+  background-color: white;
 }
