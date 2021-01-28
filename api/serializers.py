@@ -5,4 +5,4 @@ from .models import NoiseModel
 class NoiseSerializer(serializers.ModelSerializer):
     class Meta:
         model = NoiseModel
-        fields = ('array', 'mean', 'variance')
+        fields = ('array', 'mean', 'variance', 'noise_type')
