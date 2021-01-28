@@ -25,7 +25,7 @@ git clone https://github.com/nemzmen/inverted-pendulum.git <br />
 <b>w konsoli nr 1: (wymagane by wprowadzać zmiany w aplikacji frontend)</b> <br />
 cd frontend <br />
 npm install <br />
-npm run dev <br />
+npm run dev (wymagane przy wprowadzaniu zmian w aplikacji frontend)<br />
 
 <b>w konsoli nr 2: (uruchomienie serwera)</b> <br />
 python .\manage.py makemigrations <br />
@@ -47,6 +47,7 @@ python .\manage.py migrate <br />
 python .\manage.py runserver <br />
 +- project_name/settings.py (added rest_framework) <br />
 ++ api/urls.py, serializers.py... <br />
+pip install numpy <br />
 
 django-admin startapp frontend <br />
 cd frontend <br />
@@ -59,6 +60,7 @@ npm i @babel/plugin-proposal-class-properties <br />
 npm i react-router-dom <br />
 npm i @material-ui/icons <br />
 npm i @material-ui/lab <br />
+npm i recharts <br />
 +- project_name/settings.py (added application) <br />
 +- project_name/urls.py (added api.urls) <br />
 ++ babel.config.json <br />
@@ -74,3 +76,4 @@ python .\manage.py runserver <br />
 uzyskai adres IPv4 hosta (ipconfig, ifconfig) <br />
 project_name/settings.py -> ALLOWED_HOSTS -> dodaj do tablicy np. '192.168.1.101' <br />
 python manage.py runserver 192.168.1.101:8000 <br />
+zmień adres w frontend/src/api/urls <br />
