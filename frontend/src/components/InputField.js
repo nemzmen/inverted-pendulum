@@ -14,8 +14,10 @@ export const InputField = ({
   return (
     <div className='margin-12 button-background'>
       <TextField
-        fullWidth
+        size='small'
         variant='outlined'
+        multiline
+        rowsMax={4}
         error={error}
         disabled={disabled}
         label={label}
