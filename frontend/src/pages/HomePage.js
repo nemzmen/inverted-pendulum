@@ -75,7 +75,7 @@ export default class HomePage extends Component {
       SampleTimeValue: props.SampleTimeValue,
       MassValue: props.MassValue,
       LengthValue: props.LengthValue,
-      MomentValue: props.MomentValue,
+      AngleValue: props.AngleValue,
       FrictionValue: props.FrictionValue,
       P_PValue: props.P_PValue,
       PID_PValue: props.PID_PValue,
@@ -124,7 +124,7 @@ export default class HomePage extends Component {
   }
 
   onChangeMomentField = ({target}) => {
-    this.setState({MomentValue: target.value});
+    this.setState({AngleValue: target.value});
   }
 
   onChangeFrictionField = ({target}) => {
@@ -157,7 +157,7 @@ export default class HomePage extends Component {
       SampleTimeValue: this.state.SampleTimeValue,
       MassValue: this.state.MassValue,
       LengthValue: this.state.LengthValue,
-      MomentValue: this.state.MomentValue,
+      AngleValue: this.state.AngleValue,
       FrictionValue: this.state.FrictionValue,
       P_PValue: this.state.P_PValue,
       PID_PValue: this.state.PID_PValue,
@@ -188,7 +188,7 @@ export default class HomePage extends Component {
       MassValue: this.props.MassValue,
       LengthValue: this.props.LengthValue,
       SampleTimeValue: this.props.SampleTimeValue,
-      MomentValue: this.props.MomentValue,
+      Angle: this.props.AngleValue,
       FrictionValue: this.props.FrictionValue,
       P_PValue: this.props.P_PValue,
       PID_PValue: this.props.PID_PValue,
@@ -288,7 +288,7 @@ export default class HomePage extends Component {
                       <TableCell>Całka z wartości bezwzględnej uchybu</TableCell>
                       <TableCell>{this.state.SampleTimeValue}</TableCell>
                       <TableCell>{this.state.TimeValue}</TableCell>
-                      <TableCell>{this.state.MomentValue}</TableCell>
+                      <TableCell>{this.state.AngleValue}</TableCell>
 
                     </TableRow>
 
@@ -316,7 +316,7 @@ export default class HomePage extends Component {
           </div>
             <TextField
               multiline
-              rowsMax={2}
+              rowsMax={3}
               variant='outlined'
               label='Czas'
               placeholder='Wpisz wartość'
@@ -332,12 +332,21 @@ export default class HomePage extends Component {
               onChange={this.onChangeSampleTimeField}
             />
 
+            <TextField
+
+              label='Kąt zadany'
+              variant='outlined'
+              placeholder='Wpisz wartość'
+              value={this.state.AngleValue}
+              onChange={this.onChangeMomentField}
+            />
+
           <div className='center padding-x'>
             <h2>Parametry obiektu sterowania</h2>
           </div>
             <TextField
               multiline
-              rowsMax={4}
+              rowsMax={3}
               variant='outlined'
               label='Masa wahadła'
               placeholder='Wpisz wartość'
@@ -350,15 +359,6 @@ export default class HomePage extends Component {
               placeholder='Wpisz wartość'
               value={this.state.LengthValue}
               onChange={this.onChangeLengthField}
-            />
-
-            <TextField
-
-              label='Moment bezwładności wahadła'
-              variant='outlined'
-              placeholder='Wpisz wartość'
-              value={this.state.MomentValue}
-              onChange={this.onChangeMomentField}
             />
             <TextField
               label='Współczynnik tarcia'
@@ -484,7 +484,7 @@ export default class HomePage extends Component {
     SampleTimeValue: '30',
     MassValue: '10',
     LengthValue: '15',
-    MomentValue: '5',
+    AngleValue: '5',
     FrictionValue: '0.5',
     P_PValue: '3',
     PID_PValue: '2',
