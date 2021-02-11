@@ -221,7 +221,7 @@ export default class HomePage extends Component {
             severity='warning'
             title='Błąd'
             description='Wprowadzono niepoprawne dane - '
-            strongDescription='sprawdź typy zmiennych srania!'
+            strongDescription='sprawdź typy zmiennych!'
           />
         )}
         <div className='center padding-12 white'>
