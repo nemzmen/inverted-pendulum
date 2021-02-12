@@ -25,7 +25,7 @@ SECRET_KEY = '$8p=46v_md1=gg5$$e=n5)r(_g)6=pg+-itya@hwg$p^l&egc3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.100.14']
 
 
 # Application definition

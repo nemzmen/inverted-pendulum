@@ -12,11 +12,12 @@ const SelectField = ({
   onChange = defaultProps.onChange,
 }) => {
   return (
-    <div className='margin-12 button-background'>
+    <div className='button-background'>
       <TextField
         select
         fullWidth
         variant='outlined'
+        size="small"
         error={error}
         disabled={disabled}
         label={label}
