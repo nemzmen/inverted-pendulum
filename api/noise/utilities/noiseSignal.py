@@ -8,8 +8,14 @@ noise_types = {
 }
 
 
-class Signal:
+class NoiseSignal:
     def __init__(self):
+        self.sum = 'sum'
+        self.step = 'step'
+        self.value = 'value'
+        self.normal = 'normal'
+        self.pareto = 'pareto'
+
         self.size = 100
         self.mean = 0.0
         self.variance = 1.0
@@ -23,16 +29,16 @@ class Signal:
 
         data_array = []
 
-        if noise_type == noise_types['normal']:
+        if noise_type == noise_types[self.normal]:
             data_array = numpy.random.normal(loc=mean, scale=variance, size=size)
 
-        if noise_type == noise_types['pareto']:
+        if noise_type == noise_types[self.pareto]:
             data_array = (numpy.random.pareto(a=2.5, size=size) * variance) + mean
         
-        if noise_type == noise_types['sum']:
+        if noise_type == noise_types[self.sum]:
             normal_signal = numpy.random.normal(loc=mean, scale=variance, size=size)
             pareto_signal = (numpy.random.pareto(a=4, size=size) + mean) * variance
             data_array = numpy.add(normal_signal,pareto_signal)
 
-        noise_signal = [{'step': index, 'value': item} for index, item in enumerate(data_array)]
+        noise_signal = [{self.step: index, self.value: item} for index, item in enumerate(data_array)]
         return noise_signal

@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import NoiseModel
 from .serializers import NoiseSerializer
-from .utulities import Signal
-from .helpers import check_int, check_float
+from .utilities.noiseSignal import NoiseSignal
+from ..helpers import check_int, check_float
 
 
 class NoiseView(APIView):
@@ -40,7 +40,7 @@ class NoiseView(APIView):
         variance = float(readed_variable_variance)
         noise_type = readed_variable_noise_type
 
-        noise_signal = Signal().get_noise(size=size, mean=mean, variance=variance, noise_type=noise_type)
+        noise_signal = NoiseSignal().get_noise(size=size, mean=mean, variance=variance, noise_type=noise_type)
         array={self.signal: noise_signal}
 
         if len(queryset) == 0:
