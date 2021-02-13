@@ -207,14 +207,14 @@ export default class HomePage extends Component {
     return (
       <div className='main-container' >
       <div className='center padding-12 ' >
-        <div style={{color: "black", fontSize: 50}}>
+
         <Card>
           <CardContent>
-              Symulacja sterowania wahadłem odwróconym
+              <h1>Symulacja sterowania wahadłem odwróconym</h1>
 
           </CardContent>
         </Card>
-        </div>
+
       </div>
         {this.state.alertVisible && (
           <AlertComponent
@@ -224,29 +224,42 @@ export default class HomePage extends Component {
             strongDescription='sprawdź typy zmiennych!'
           />
         )}
+
         <div className='center padding-12 white'>
 
           <div className='padding-12'>
           <div className='center'>
           <h2>Odpowiedź obiektów</h2>
           </div>
+          <div className='margin-left'>
+            [°]
+          </div>
             <ChartComponent data={this.state.defaultChartData} width={800} height={250} />
+          <div className='margin-left-max'>
+            [s]
+          </div>
            <div className='center padding-12'>
-            <img src="http://assets.stickpng.com/images/58afdad6829958a978a4a693.png" width="18" height="18">
+            <img src="http://assets.stickpng.com/images/58afdad6829958a978a4a693.png" width="17" height="17">
             </img>
-             Regulator P &emsp;
+             &nbsp; Regulator P &emsp;
             <img src="https://smallimg.pngkey.com/png/small/24-249104_blue-dot-clip-art-at-clker-sky-blue.png" width="18" height="18">
             </img>
-             Regulator PID &emsp;
-            <img src="https://cdn.shopify.com/s/files/1/0050/6793/1718/products/Basic_green_dot_300x300.png?v=1590010493" width="25" height="25">
+             &nbsp; Regulator PID &emsp;
+            <img src="https://icon2.cleanpng.com/20180328/tsq/kisspng-circle-n-carpet-cleaning-upland-green-dot-corporat-dots-5abb905aa15890.9523326215222416266609.jpg" width='20' height='20'>
             </img>
-             Fuzzy
+             &nbsp; Fuzzy
             </div>
 
            <div className='center'>
              <h2>Sygnał szumu</h2>
            </div>
+           <div className='margin-left'>
+            [M]
+           </div>
             <ChartComponent data={this.state.chartData} width={800} height={250} />
+            <div className='margin-left-max'>
+            [s]
+          </div>
             <div className='center padding-12'>
             <div className="padding-space">
             <Button
@@ -257,6 +270,7 @@ export default class HomePage extends Component {
               Symuluj
             </Button>
             </div>
+            <div className="padding-space">
             <Button
               variant='contained'
               size='large'
@@ -264,6 +278,7 @@ export default class HomePage extends Component {
               onClick={this.onClickResetButton}>
               Resetuj
             </Button>
+            </div>
           </div>
 
           <div className='center padding-12 ' >
@@ -314,6 +329,8 @@ export default class HomePage extends Component {
           <h2>Parametry symulacji</h2>
 
           </div>
+
+          <div className='center'>
             <TextField
               multiline
               rowsMax={3}
@@ -340,10 +357,13 @@ export default class HomePage extends Component {
               value={this.state.AngleValue}
               onChange={this.onChangeMomentField}
             />
-
+            </div>
+            <div className='padding-enter'>
+            </div>
           <div className='center padding-x'>
             <h2>Parametry obiektu sterowania</h2>
           </div>
+          <div className='center'>
             <TextField
               multiline
               rowsMax={3}
@@ -353,6 +373,7 @@ export default class HomePage extends Component {
               value={this.state.MassValue}
               onChange={this.onChangeMassField}
             />
+
          <TextField
               label='Długość wahadła'
               variant='outlined'
@@ -367,9 +388,13 @@ export default class HomePage extends Component {
               value={this.state.FrictionValue}
               onChange={this.onChangeFrictionField}
             />
+            </div>
+            <div className='padding-enter'>
+            </div>
           <div className='center padding-x'>
            <h2>Nastawy regulatora P</h2>
           </div>
+          <div className='center'>
             <TextField
               label='P'
               variant='outlined'
@@ -377,10 +402,13 @@ export default class HomePage extends Component {
               value={this.state.P_PValue}
               onChange={this.onChangeP_PField}
              />
+            </div>
+            <div className='padding-enter'>
+            </div>
            <div className='center padding-x'>
             <h2>Nastawy regulatora PID</h2>
           </div>
-
+            <div className='center'>
             <TextField
               multiline
               rowsMax={3}
@@ -406,10 +434,13 @@ export default class HomePage extends Component {
               value={this.state.PID_DValue}
               onChange={this.onChangePID_DField}
             />
+            </div>
+            <div className='padding-enter'>
+            </div>
             <div className='center padding-x'>
             <h2>Parametry szumu</h2>
            </div>
-
+            <div className='center'>
             <TextField
               multiline
               rowsMax={3}
@@ -427,19 +458,24 @@ export default class HomePage extends Component {
               value={this.state.meanValue}
               onChange={this.onChangeMeanField}
             />
-
+            </div>
+            <div className='padding-enter'>
+            </div>
            <div className='center padding-x'>
            <h2>Typ szumu</h2>
            </div>
-
+            <div className='center'>
             <div className=' padding-select'>
             <SelectField
               label='Typ szumu'
+              size='large'
               value={this.state.noiseTypeValue}
               currencies={noiseTypeCurrencies}
               onChange={this.onChangeNoiseTypeField}
             />
-
+            </div>
+            </div>
+            <div className='padding-enter'>
             </div>
 
             <div className='center padding-x'>
@@ -448,19 +484,21 @@ export default class HomePage extends Component {
 
             <Button
               variant='contained'
-              size='medium'
+              size='large'
               color='primary'
               onClick={this.onClickGenerateButton}>
               Wygeneruj sygnał szumu
             </Button>
             </div>
+            <div className="padding-space">
             <Button
               variant='contained'
-              size='medium'
+              size='large'
               color='secondary'
               onClick={this.onClickNoiseResetButton}>
               Resetuj ustawienia
             </Button>
+            </div>
 
 
           </div>
