@@ -1,49 +1,32 @@
-import React, { Component } from 'react';
-import {Button} from '@material-ui/core';
-import InputField from '../components/InputField';
-import SelectField from '../components/SelectField';
-import AlertComponent from '../components/AlertComponent';
-import ChartComponent from '../components/ChartComponent';
-import BasicTextFields from '../components/2ChartComponent';
-import SimpleNoSsr from '../components/Icon';
-import {getNoiseSignal} from '../api/endpoints';
-import {noiseTypes} from '../../static/dictionaries';
-import TextField from '@material-ui/core/TextField';
+import { Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
+import TextField from '@material-ui/core/TextField';
+import React, { Component } from 'react';
+import { noiseTypes } from '../../static/dictionaries';
+import { getSimulationData } from '../api/endpoints';
+import AlertComponent from '../components/AlertComponent';
+import ChartComponent from '../components/ChartComponent';
+import SelectField from '../components/SelectField';
 
 const defaultChartData = [
-  {step: 0, value: 0, valueTwo: 5, valueThree: 5},
-  {step: 1, value: 0, valueTwo: 35, valueThree: 145},
-  {step: 2, value: 0, valueTwo: 5, valueThree: 132},
-  {step: 3, value: 0, valueTwo: 5, valueThree: 124},
-  {step: 4, value: 135, valueTwo: 32, valueThree: 100},
-  {step: 5, value: 0, valueTwo: 5, valueThree: 80},
-  {step: 6, value: 0, valueTwo: 5, valueThree: 60},
-  {step: 7, value: 0, valueTwo: 33, valueThree: 23},
-  {step: 8, value: 100, valueTwo: 5, valueThree: 199},
-  {step: 9, value: 0, valueTwo: 5, valueThree: 260},
-  {step: 100, value: 0, valueTwo: 140, valueThree: 5},
-  {step: 110, value: 0, valueTwo: 5, valueThree: 14},
-  {step: 230, value: 96, valueTwo: 5, valueThree: 5},
-  {step: 453, value: 0, valueTwo: 12, valueThree: 73},
-  {step: 654, value: 13, valueTwo: 5, valueThree: 5},
-  {step: 754, value: 0, valueTwo: 5, valueThree: 156},
-  {step: 863, value: 15, valueTwo: 6, valueThree: 134},
-  {step: 970, value: 132, valueTwo: 5, valueThree: 13},
-  {step: 979, value: 0, valueTwo: 5, valueThree: 4},
-  {step: 998, value: 155, valueTwo: 125, valueThree: 3},
+  {step: 0, value: 0},
+  {step: 1, value: 0},
+  {step: 2, value: 0},
+  {step: 3, value: 0},
+  {step: 4, value: 0},
+  {step: 5, value: 0},
+  {step: 6, value: 0},
+  {step: 7, value: 0},
+  {step: 8, value: 0},
+  {step: 9, value: 0},
 ]
 
 const noiseTypeCurrencies = [
@@ -61,11 +44,6 @@ const noiseTypeCurrencies = [
   },
 ];
 
-
-
-
-
-
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +53,7 @@ export default class HomePage extends Component {
       SampleTimeValue: props.SampleTimeValue,
       MassValue: props.MassValue,
       LengthValue: props.LengthValue,
-      AngleValue: props.AngleValue,
+      timeout: props.timeout,
       FrictionValue: props.FrictionValue,
       P_PValue: props.P_PValue,
       PID_PValue: props.PID_PValue,
@@ -88,8 +66,6 @@ export default class HomePage extends Component {
       chartData: props.chartData,
     }
   }
-
-
 
   onChangeSizeField = ({target}) => {
     this.setState({sizeValue: target.value});
@@ -124,7 +100,7 @@ export default class HomePage extends Component {
   }
 
   onChangeMomentField = ({target}) => {
-    this.setState({AngleValue: target.value});
+    this.setState({timeout: target.value});
   }
 
   onChangeFrictionField = ({target}) => {
@@ -148,25 +124,44 @@ export default class HomePage extends Component {
   }
 
   onClickGenerateButton = async () => {
-    const response = await getNoiseSignal({
-      size: this.state.sizeValue,
-      mean: this.state.meanValue,
-      variance: this.state.varianceValue,
-      noiseType: this.state.noiseTypeValue,
-      TimeValue: this.state.TimeValue,
-      SampleTimeValue: this.state.SampleTimeValue,
-      MassValue: this.state.MassValue,
-      LengthValue: this.state.LengthValue,
-      AngleValue: this.state.AngleValue,
-      FrictionValue: this.state.FrictionValue,
-      P_PValue: this.state.P_PValue,
-      PID_PValue: this.state.PID_PValue,
-      PID_IValue: this.state.PID_IValue,
-      PID_DValue: this.state.PID_DValue,
+    const response = await getSimulationData({
+      simulation_time: this.state.TimeValue,
+      sampling_time: this.state.SampleTimeValue,
+      timeout: this.state.timeout,
+      pendulum_mass: this.state.MassValue,
+      pendulum_length: this.state.LengthValue,
+      pendulum_friction: this.state.FrictionValue,
+      p_value_of_p_controller: this.state.P_PValue,
+      p_value_of_pid_controller: this.state.PID_PValue,
+      i_value_of_pid_controller: this.state.PID_IValue,
+      d_value_of_pid_controller: this.state.PID_DValue,
     });
-    if (response.data && response.data.array && response.data.array.signal) {
-      this.setState({chartData: response.data.array.signal}),
-      this.setState({defaultChartData: defaultChartData});
+    if (
+      response.data &&
+      response.data.array &&
+      response.data.array.sampling_time &&
+      response.data.array.proportional &&
+      response.data.array.pid &&
+      response.data.array.fuzzy &&
+      response.data.array.proportional.signal &&
+      response.data.array.pid.signal &&
+      response.data.array.fuzzy.signal
+    ) {
+      const chartData = [];
+      const samplingTime = response.data.array.sampling_time;
+      const proportionalSignal = response.data.array.proportional.signal;
+      const pidSignal = response.data.array.pid.signal;
+      const fuzzySignal = response.data.array.fuzzy.signal;
+
+      for (let i = 0; i < proportionalSignal.length; i++) {
+        chartData.push({
+          step: i * samplingTime + samplingTime,
+          proportional: proportionalSignal[i],
+          pid: pidSignal[i],
+          fuzzy: fuzzySignal[i],
+        })
+      }
+      this.setState({chartData});
     } else {
       this.setState({alertVisible: true});
       setTimeout(this.hideErrorAlert, 4000)
@@ -188,7 +183,7 @@ export default class HomePage extends Component {
       MassValue: this.props.MassValue,
       LengthValue: this.props.LengthValue,
       SampleTimeValue: this.props.SampleTimeValue,
-      Angle: this.props.AngleValue,
+      timeout: this.props.timeout,
       FrictionValue: this.props.FrictionValue,
       P_PValue: this.props.P_PValue,
       PID_PValue: this.props.PID_PValue,
@@ -230,7 +225,7 @@ export default class HomePage extends Component {
           <div className='center'>
           <h2>Odpowiedź obiektów</h2>
           </div>
-            <ChartComponent data={this.state.defaultChartData} width={800} height={250} />
+            <ChartComponent data={this.state.chartData} width={800} height={250} />
            <div className='center padding-12'>
             <img src="http://assets.stickpng.com/images/58afdad6829958a978a4a693.png" width="18" height="18">
             </img>
@@ -288,7 +283,7 @@ export default class HomePage extends Component {
                       <TableCell>Całka z wartości bezwzględnej uchybu</TableCell>
                       <TableCell>{this.state.SampleTimeValue}</TableCell>
                       <TableCell>{this.state.TimeValue}</TableCell>
-                      <TableCell>{this.state.AngleValue}</TableCell>
+                      <TableCell>{this.state.timeout}</TableCell>
 
                     </TableRow>
 
@@ -334,10 +329,10 @@ export default class HomePage extends Component {
 
             <TextField
 
-              label='Kąt zadany'
+              label='Opóźnienie (próbki)'
               variant='outlined'
               placeholder='Wpisz wartość'
-              value={this.state.AngleValue}
+              value={this.state.timeout}
               onChange={this.onChangeMomentField}
             />
 
@@ -480,15 +475,15 @@ export default class HomePage extends Component {
 
   static defaultProps = {
     sizeValue: '1000',
-    TimeValue: '25',
-    SampleTimeValue: '30',
-    MassValue: '10',
-    LengthValue: '15',
-    AngleValue: '5',
-    FrictionValue: '0.5',
-    P_PValue: '3',
-    PID_PValue: '2',
-    PID_IValue: '4',
+    TimeValue: '40',
+    SampleTimeValue: '0.05',
+    MassValue: '1',
+    LengthValue: '0.5',
+    timeout: '0',
+    FrictionValue: '0.1',
+    P_PValue: '1.1',
+    PID_PValue: '1',
+    PID_IValue: '1',
     PID_DValue: '1',
     meanValue: '0',
     varianceValue: '1',
