@@ -224,13 +224,20 @@ export default class HomePage extends Component {
             strongDescription='sprawdź typy zmiennych!'
           />
         )}
+
         <div className='center padding-12 white'>
 
           <div className='padding-12'>
           <div className='center'>
           <h2>Odpowiedź obiektów</h2>
           </div>
+          <div className='margin-left'>
+            [°]
+          </div>
             <ChartComponent data={this.state.defaultChartData} width={800} height={250} />
+          <div className='margin-left-max'>
+            [s]
+          </div>
            <div className='center padding-12'>
             <img src="http://assets.stickpng.com/images/58afdad6829958a978a4a693.png" width="17" height="17">
             </img>
@@ -246,7 +253,13 @@ export default class HomePage extends Component {
            <div className='center'>
              <h2>Sygnał szumu</h2>
            </div>
+           <div className='margin-left'>
+            [M]
+           </div>
             <ChartComponent data={this.state.chartData} width={800} height={250} />
+            <div className='margin-left-max'>
+            [s]
+          </div>
             <div className='center padding-12'>
             <div className="padding-space">
             <Button
