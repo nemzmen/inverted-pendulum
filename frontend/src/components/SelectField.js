@@ -17,7 +17,7 @@ const SelectField = ({
         select
         fullWidth
         variant='outlined'
-        size="small"
+        size="large"
         error={error}
         disabled={disabled}
         label={label}
