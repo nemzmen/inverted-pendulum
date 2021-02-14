@@ -14,7 +14,6 @@ from .utilities.simulation import Simulation
 
 
 class SimulationView(APIView):
-
     serializer_class = SimulationSerializer
     simulation_time = 'simulation_time'
     sampling_time = 'sampling_time'
@@ -22,10 +21,17 @@ class SimulationView(APIView):
     pendulum_mass = 'pendulum_mass'
     pendulum_length = 'pendulum_length'
     pendulum_friction = 'pendulum_friction'
+    max_moment = 'max_moment'
     p_value_of_p_controller = 'p_value_of_p_controller'
     p_value_of_pid_controller = 'p_value_of_pid_controller'
     i_value_of_pid_controller = 'i_value_of_pid_controller'
     d_value_of_pid_controller = 'd_value_of_pid_controller'
+    fuzzy_error_min = 'fuzzy_error_min'
+    fuzzy_derivative_min = 'fuzzy_derivative_min'
+    fuzzy_control_min = 'fuzzy_control_min'
+    fuzzy_error_max = 'fuzzy_error_max'
+    fuzzy_derivative_max = 'fuzzy_derivative_max'
+    fuzzy_control_max = 'fuzzy_control_max'
 
 
     def post(self, request, format=None):
@@ -35,10 +41,17 @@ class SimulationView(APIView):
         readed_variable_pendulum_mass = request.data.get(self.pendulum_mass, None)
         readed_variable_pendulum_length = request.data.get(self.pendulum_length, None)
         readed_variable_pendulum_friction = request.data.get(self.pendulum_friction, None)
+        readed_variable_max_moment = request.data.get(self.max_moment, None)
         readed_variable_p_value_of_p_controller = request.data.get(self.p_value_of_p_controller, None)
         readed_variable_p_value_of_pid_controller = request.data.get(self.p_value_of_pid_controller, None)
         readed_variable_i_value_of_pid_controller = request.data.get(self.i_value_of_pid_controller, None)
         readed_variable_d_value_of_pid_controller = request.data.get(self.d_value_of_pid_controller, None)
+        readed_variable_fuzzy_error_min = request.data.get(self.fuzzy_error_min, None)
+        readed_variable_fuzzy_derivative_min = request.data.get(self.fuzzy_derivative_min, None)
+        readed_variable_fuzzy_control_min = request.data.get(self.fuzzy_control_min, None)
+        readed_variable_fuzzy_error_max = request.data.get(self.fuzzy_error_max, None)
+        readed_variable_fuzzy_derivative_max = request.data.get(self.fuzzy_derivative_max, None)
+        readed_variable_fuzzy_control_max = request.data.get(self.fuzzy_control_max, None)
 
         if not check_float(readed_variable_simulation_time):
             return Response({'Type error': 'cannot convert simulation_time to float'}, status=status.HTTP_400_BAD_REQUEST)
@@ -52,6 +65,8 @@ class SimulationView(APIView):
             return Response({'Type error': 'cannot convert pendulum_length to float'}, status=status.HTTP_400_BAD_REQUEST)
         if not check_float(readed_variable_pendulum_friction):
             return Response({'Type error': 'cannot convert pendulum_friction to float'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_float(readed_variable_max_moment):
+            return Response({'Type error': 'cannot convert max_moment to float'}, status=status.HTTP_400_BAD_REQUEST)
         if not check_float(readed_variable_p_value_of_p_controller):
             return Response({'Type error': 'cannot convert p_value_of_p_controller to float'}, status=status.HTTP_400_BAD_REQUEST)
         if not check_float(readed_variable_p_value_of_pid_controller):
@@ -60,6 +75,18 @@ class SimulationView(APIView):
             return Response({'Type error': 'cannot convert i_value_of_pid_controller to float'}, status=status.HTTP_400_BAD_REQUEST)
         if not check_float(readed_variable_d_value_of_pid_controller):
             return Response({'Type error': 'cannot convert d_value_of_pid_controller to float'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_float(readed_variable_fuzzy_error_min):
+            return Response({'Type error': 'cannot convert fuzzy_error_min to float'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_float(readed_variable_fuzzy_derivative_min):
+            return Response({'Type error': 'cannot convert fuzzy_derivative_min to float'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_float(readed_variable_fuzzy_control_min):
+            return Response({'Type error': 'cannot convert fuzzy_control_min to float'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_float(readed_variable_fuzzy_error_max):
+            return Response({'Type error': 'cannot convert fuzzy_error_max to float'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_float(readed_variable_fuzzy_derivative_max):
+            return Response({'Type error': 'cannot convert fuzzy_derivative_max to float'}, status=status.HTTP_400_BAD_REQUEST)
+        if not check_float(readed_variable_fuzzy_control_max):
+            return Response({'Type error': 'cannot convert fuzzy_control_max to float'}, status=status.HTTP_400_BAD_REQUEST)
 
         simulation_time = float(readed_variable_simulation_time)
         sampling_time = float(readed_variable_sampling_time)
@@ -67,10 +94,24 @@ class SimulationView(APIView):
         pendulum_mass = float(readed_variable_pendulum_mass)
         pendulum_length = float(readed_variable_pendulum_length)
         pendulum_friction = float(readed_variable_pendulum_friction)
+        max_moment = float(readed_variable_max_moment)
         p_value_of_p_controller = float(readed_variable_p_value_of_p_controller)
         p_value_of_pid_controller = float(readed_variable_p_value_of_pid_controller)
         i_value_of_pid_controller = float(readed_variable_i_value_of_pid_controller)
         d_value_of_pid_controller = float(readed_variable_d_value_of_pid_controller)
+        fuzzy_error_min = float(readed_variable_fuzzy_error_min)
+        fuzzy_derivative_min = float(readed_variable_fuzzy_derivative_min)
+        fuzzy_control_min = float(readed_variable_fuzzy_control_min)
+        fuzzy_error_max = float(readed_variable_fuzzy_error_max)
+        fuzzy_derivative_max = float(readed_variable_fuzzy_derivative_max)
+        fuzzy_control_max = float(readed_variable_fuzzy_control_max)
+
+        fuzzy_error_min
+        fuzzy_derivative_min
+        fuzzy_control_min
+        fuzzy_error_max
+        fuzzy_derivative_max
+        fuzzy_control_max
 
         # create pendulum objects
         p_pendulum = InvertedPendulum(sampling_time, pendulum_mass, pendulum_length, pendulum_friction)
@@ -88,7 +129,14 @@ class SimulationView(APIView):
                 d_value_of_pid_controller)
 
         # create fuzzy controller
-        fuzzy_controller = FuzzyController()
+        fuzzy_controller = FuzzyController(
+                sampling_time,
+                fuzzy_error_min,
+                fuzzy_derivative_min,
+                fuzzy_control_min,
+                fuzzy_error_max,
+                fuzzy_derivative_max,
+                fuzzy_control_max)
 
         # create simulation object
         simulation = Simulation(
@@ -96,7 +144,8 @@ class SimulationView(APIView):
                 sampling_time,
                 timeout,
                 pendulum_mass,
-                pendulum_length)
+                pendulum_length,
+                max_moment)
 
         # get simulations data
         p_simulation_data = simulation.get_simulation_data(p_pendulum, p_controller)

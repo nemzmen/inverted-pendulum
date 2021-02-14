@@ -12,12 +12,21 @@ from .proportionalController import ProportionalController
 class Simulation:
     signal = 'signal'
 
-    def __init__(self, simulation_time=None, sampling_time=None, timeout=None, pendulum_mass=None, pendulum_length=None):
+    def __init__(
+            self,
+            simulation_time=None,
+            sampling_time=None,
+            timeout=None,
+            pendulum_mass=None,
+            pendulum_length=None,
+            max_moment=None):
+
         self.simulation_time = default.simulation_time if simulation_time == None else simulation_time
         self.sampling_time = default.sampling_time if sampling_time == None else sampling_time
         self.timeout = default.timeout if timeout == None else timeout
         self.pendulum_mass = default.pendulum_mass if pendulum_mass == None else pendulum_mass
         self.pendulum_length = default.pendulum_length if pendulum_length == None else pendulum_length
+        self.max_moment = default.max_moment if max_moment == None else max_moment
 
         self.data_length = int(self.simulation_time / self.sampling_time)
         self.mgl_ratio = self.pendulum_mass * default.gravity_acceleration * self.pendulum_length
@@ -25,6 +34,16 @@ class Simulation:
 
     def radian_to_degree(self, radian):
         return radian * 180 / math.pi
+
+    
+    def moment_limit(self, moment):
+        if moment > self.max_moment:
+            return self.max_moment
+
+        if moment < -1 * self.max_moment:
+            return -1 * self.max_moment
+            
+        return moment
 
     
     def get_noise_signal(self, length):
@@ -60,15 +79,15 @@ class Simulation:
             signal.append(self.radian_to_degree(output_signal))
 
             # obliczenia symulacji
-            error_signal = default.setpoint - output_signal                         # uchyb sygnału (xe)
-            control_signal = controller.get_output(error_signal)                    # wyjście regulatora (xs)
-            control_signal_register.pop()                                           # usunięcie ostatniego elementu rejestru
-            control_signal_register.insert(0, control_signal)                       # dodanie elementu do rejestru
-            delayed_control_signal = control_signal_register[-1]                    # pobranie ostatniego elementu rejestru
-            control_moment = math.sin(delayed_control_signal) * self.mgl_ratio      # moment sterujący (Ms)
-            noise_moment = noise_signal[i]                                          # moment zakłócający (Mz)
-            external_moment = control_moment + noise_moment                         # suma momentów zewnętrznych
-            output_signal = pendulum.get_output(external_moment)                    # kąt wychylenia
+            error_signal = default.setpoint - output_signal                                         # uchyb sygnału (xe)
+            control_signal = controller.get_output(error_signal)                                    # wyjście regulatora (xs)
+            control_signal_register.pop()                                                           # usunięcie ostatniego elementu rejestru
+            control_signal_register.insert(0, control_signal)                                       # dodanie elementu do rejestru
+            delayed_control_signal = control_signal_register[-1]                                    # pobranie ostatniego elementu rejestru
+            control_moment = self.moment_limit(math.sin(delayed_control_signal) * self.mgl_ratio)   # moment sterujący (Ms)
+            noise_moment = noise_signal[i]                                                          # moment zakłócający (Mz)
+            external_moment = control_moment + noise_moment                                         # suma momentów zewnętrznych
+            output_signal = pendulum.get_output(external_moment)                                    # kąt wychylenia
 
             # wyliczenie parametrów jakości
             error_abs += abs(error_signal) * self.sampling_time

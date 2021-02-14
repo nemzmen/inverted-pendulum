@@ -4,7 +4,6 @@ from . import default
 
 
 class InvertedPendulum:
-
     output_signal = default.output_signal
     pendulum_speed = default.pendulum_speed
     pendulum_acceleration = default.pendulum_acceleration
