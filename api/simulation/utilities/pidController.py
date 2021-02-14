@@ -37,6 +37,4 @@ class PIDController:
         # uchyb zapamiętany dla celów wyliczeń kolejnej iteracji
         self.last_err_signal = err
 
-        print(control_signal)
-
         return control_signal

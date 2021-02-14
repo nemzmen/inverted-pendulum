@@ -42,13 +42,13 @@ class FuzzyController:
         self.output_linguistic_area = [self.fuzzy_control_min + i * self.output_part for i in range(0, self.size)]
         
         out = self.output_linguistic_area
-        self.output_linguistic_matrix = [[out[0],out[0],out[1],out[1],out[2],out[3],out[4]],
-                                        [out[0],out[0],out[1],out[2],out[3],out[4],out[5]],
-                                        [out[0],out[1],out[2],out[3],out[3],out[4],out[5]],
+        self.output_linguistic_matrix =[[out[0],out[0],out[0],out[1],out[1],out[2],out[3]],
+                                        [out[0],out[0],out[1],out[1],out[2],out[3],out[4]],
+                                        [out[0],out[1],out[1],out[2],out[3],out[4],out[5]],
                                         [out[1],out[1],out[2],out[3],out[4],out[5],out[5]],
-                                        [out[1],out[2],out[3],out[3],out[4],out[5],out[6]],
-                                        [out[1],out[2],out[3],out[4],out[5],out[6],out[6]],
-                                        [out[2],out[3],out[4],out[5],out[5],out[6],out[6]]]
+                                        [out[1],out[2],out[3],out[4],out[5],out[5],out[6]],
+                                        [out[2],out[3],out[4],out[5],out[5],out[6],out[6]],
+                                        [out[3],out[4],out[5],out[5],out[6],out[6],out[6]]]
                                     
 
     def fuzzyfication(self, min_val, max_val, signal, signal_part, linguistic_area):
@@ -63,7 +63,7 @@ class FuzzyController:
         rules_matrix = [[0 for i in range(self.size)] for j in range(self.size)]
         for i in range(self.size):
             for j in range(self.size):
-                rules_matrix[i][j] = (row[i] + column[j]) / 2
+                rules_matrix[i][j] = row[i] * column[j]
         return rules_matrix
         
         
