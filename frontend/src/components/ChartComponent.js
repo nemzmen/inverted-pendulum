@@ -27,6 +27,7 @@ export const ChartComponent = ({
   const iDataKey = getDataKey(data, 3);
 
   return (
+
     <LineChart
       data={data}
       width={width}
