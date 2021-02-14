@@ -1,49 +1,32 @@
-import React, { Component } from 'react';
-import {Button} from '@material-ui/core';
-import InputField from '../components/InputField';
-import SelectField from '../components/SelectField';
-import AlertComponent from '../components/AlertComponent';
-import ChartComponent from '../components/ChartComponent';
-import BasicTextFields from '../components/2ChartComponent';
-import SimpleNoSsr from '../components/Icon';
-import {getNoiseSignal} from '../api/endpoints';
-import {noiseTypes} from '../../static/dictionaries';
-import TextField from '@material-ui/core/TextField';
+import { Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
+import TextField from '@material-ui/core/TextField';
+import React, { Component } from 'react';
+import { noiseTypes } from '../../static/dictionaries';
+import { getNoiseData, getSimulationData } from '../api/endpoints';
+import AlertComponent from '../components/AlertComponent';
+import ChartComponent from '../components/ChartComponent';
+import SelectField from '../components/SelectField';
 
 const defaultChartData = [
-  {step: 0, value: 0, valueTwo: 5, valueThree: 5},
-  {step: 1, value: 0, valueTwo: 35, valueThree: 145},
-  {step: 2, value: 0, valueTwo: 5, valueThree: 132},
-  {step: 3, value: 0, valueTwo: 5, valueThree: 124},
-  {step: 4, value: 135, valueTwo: 32, valueThree: 100},
-  {step: 5, value: 0, valueTwo: 5, valueThree: 80},
-  {step: 6, value: 0, valueTwo: 5, valueThree: 60},
-  {step: 7, value: 0, valueTwo: 33, valueThree: 23},
-  {step: 8, value: 100, valueTwo: 5, valueThree: 199},
-  {step: 9, value: 0, valueTwo: 5, valueThree: 260},
-  {step: 100, value: 0, valueTwo: 140, valueThree: 5},
-  {step: 110, value: 0, valueTwo: 5, valueThree: 14},
-  {step: 230, value: 96, valueTwo: 5, valueThree: 5},
-  {step: 453, value: 0, valueTwo: 12, valueThree: 73},
-  {step: 654, value: 13, valueTwo: 5, valueThree: 5},
-  {step: 754, value: 0, valueTwo: 5, valueThree: 156},
-  {step: 863, value: 15, valueTwo: 6, valueThree: 134},
-  {step: 970, value: 132, valueTwo: 5, valueThree: 13},
-  {step: 979, value: 0, valueTwo: 5, valueThree: 4},
-  {step: 998, value: 155, valueTwo: 125, valueThree: 3},
+  {step: 0, value: 0},
+  {step: 1, value: 0},
+  {step: 2, value: 0},
+  {step: 3, value: 0},
+  {step: 4, value: 0},
+  {step: 5, value: 0},
+  {step: 6, value: 0},
+  {step: 7, value: 0},
+  {step: 8, value: 0},
+  {step: 9, value: 0},
 ]
 
 const noiseTypeCurrencies = [
@@ -56,43 +39,86 @@ const noiseTypeCurrencies = [
     label: 'Sygnał Pareto',
   },
   {
+    value: noiseTypes.sin,
+    label: 'Sygnał sinus',
+  },
+  {
     value: noiseTypes.sum,
     label: 'Suma sygnałów',
   },
 ];
 
-
-
-
-
-
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sizeValue: props.sizeValue,
       TimeValue: props.TimeValue,
       SampleTimeValue: props.SampleTimeValue,
       MassValue: props.MassValue,
       LengthValue: props.LengthValue,
-      AngleValue: props.AngleValue,
+      Timeout: props.Timeout,
       FrictionValue: props.FrictionValue,
+      MaxMomentValue: props.MaxMomentValue,
+      
       P_PValue: props.P_PValue,
       PID_PValue: props.PID_PValue,
       PID_IValue: props.PID_IValue,
       PID_DValue: props.PID_DValue,
+
       meanValue: props.meanValue,
       varianceValue: props.varianceValue,
       noiseTypeValue: props.noiseTypeValue,
+
       alertVisible: props.alertVisible,
-      chartData: props.chartData,
+      pendulumChartData: props.pendulumChartData,
+      noiseChartData: props.noiseChartData,
+
+      p_error_abs: props.p_error_abs,
+      p_error_square: props.p_error_square,
+      p_control_abs: props.p_control_abs,
+      p_control_square: props.p_control_square,
+
+      pid_error_abs: props.pid_error_abs,
+      pid_error_square: props.pid_error_square,
+      pid_control_abs: props.pid_control_abs,
+      pid_control_square: props.pid_control_square,
+
+      fuzzy_error_abs: props.fuzzy_error_abs,
+      fuzzy_error_square: props.fuzzy_error_square,
+      fuzzy_control_abs: props.fuzzy_control_abs,
+      fuzzy_control_square: props.fuzzy_control_square,
+
+      fuzzyErrorMin: props.fuzzyErrorMin,
+      fuzzyDerivativeMin: props.fuzzyDerivativeMin,
+      fuzzyControlMin: props.fuzzyControlMin,
+      fuzzyErrorMax: props.fuzzyErrorMax,
+      fuzzyDerivativeMax: props.fuzzyDerivativeMax,
+      fuzzyControlMax: props.fuzzyControlMax,
     }
   }
 
+  onChangeFuzzyErrorMin = ({target}) => {
+    this.setState({fuzzyErrorMin: target.value});
+  }
 
+  onChangeFuzzyDerivativeMin = ({target}) => {
+    this.setState({fuzzyDerivativeMin: target.value});
+  }
 
-  onChangeSizeField = ({target}) => {
-    this.setState({sizeValue: target.value});
+  onChangeFuzzyControlMin = ({target}) => {
+    this.setState({fuzzyControlMin: target.value});
+  }
+
+  onChangeFuzzyErrorMax = ({target}) => {
+    this.setState({fuzzyErrorMax: target.value});
+  }
+
+  onChangeFuzzyDerivativeMax = ({target}) => {
+    this.setState({fuzzyDerivativeMax: target.value});
+  }
+
+  onChangeFuzzyControlMax = ({target}) => {
+    this.setState({fuzzyControlMax: target.value});
   }
 
   onChangeMeanField = ({target}) => {
@@ -124,7 +150,7 @@ export default class HomePage extends Component {
   }
 
   onChangeMomentField = ({target}) => {
-    this.setState({AngleValue: target.value});
+    this.setState({Timeout: target.value});
   }
 
   onChangeFrictionField = ({target}) => {
@@ -147,26 +173,92 @@ export default class HomePage extends Component {
     this.setState({PID_DValue: target.value});
   }
 
+  onChangeMaxMomentField = ({target}) => {
+    this.setState({MaxMomentValue: target.value});
+  }
+
   onClickGenerateButton = async () => {
-    const response = await getNoiseSignal({
-      size: this.state.sizeValue,
+    const response = await getSimulationData({
+      simulation_time: this.state.TimeValue,
+      sampling_time: this.state.SampleTimeValue,
+      timeout: this.state.Timeout,
+      pendulum_mass: this.state.MassValue,
+      pendulum_length: this.state.LengthValue,
+      pendulum_friction: this.state.FrictionValue,
+      max_moment: this.state.MaxMomentValue,
+      p_value_of_p_controller: this.state.P_PValue,
+      p_value_of_pid_controller: this.state.PID_PValue,
+      i_value_of_pid_controller: this.state.PID_IValue,
+      d_value_of_pid_controller: this.state.PID_DValue,
+      fuzzy_error_min: this.state.fuzzyErrorMin,
+      fuzzy_derivative_min: this.state.fuzzyDerivativeMin,
+      fuzzy_control_min: this.state.fuzzyControlMin,
+      fuzzy_error_max: this.state.fuzzyErrorMax,
+      fuzzy_derivative_max: this.state.fuzzyDerivativeMax,
+      fuzzy_control_max: this.state.fuzzyControlMax,
+    });
+    if (
+      response.data &&
+      response.data.array &&
+      response.data.array.proportional &&
+      response.data.array.pid &&
+      response.data.array.fuzzy &&
+      response.data.array.proportional.signal &&
+      response.data.array.pid.signal &&
+      response.data.array.fuzzy.signal
+    ) {
+      const pendulumChartData = [];
+      const samplingTime = response.data.array.sampling_time;
+      const proportional = response.data.array.proportional;
+      const pid = response.data.array.pid;
+      const fuzzy = response.data.array.fuzzy;
+
+      for (let i = 0; i < proportional.signal.length; i++) {
+        pendulumChartData.push({
+          step: i * samplingTime + samplingTime,
+          fuzzy: fuzzy.signal[i],
+          pid: pid.signal[i],
+          proportional: proportional.signal[i],
+        })
+      }
+      this.setState({
+        pendulumChartData,
+        p_error_abs: proportional.error_abs.toFixed(2),
+        p_error_square: proportional.error_square.toFixed(2),
+        p_control_abs: proportional.control_abs.toFixed(2),
+        p_control_square: proportional.control_square.toFixed(2),
+        pid_error_abs: pid.error_abs.toFixed(2),
+        pid_error_square: pid.error_square.toFixed(2),
+        pid_control_abs: pid.control_abs.toFixed(2),
+        pid_control_square: pid.control_square.toFixed(2),
+        fuzzy_error_abs: fuzzy.error_abs.toFixed(2),
+        fuzzy_error_square: fuzzy.error_square.toFixed(2),
+        fuzzy_control_abs: fuzzy.control_abs.toFixed(2),
+        fuzzy_control_square: fuzzy.control_square.toFixed(2),
+      });
+    } else {
+      this.setState({alertVisible: true});
+      setTimeout(this.hideErrorAlert, 4000)
+    }
+  }
+
+  onClickGenerateNoiseButton = async () => {
+    const response = await getNoiseData({
+      simulation_time: this.state.TimeValue,
+      sampling_time: this.state.SampleTimeValue,
       mean: this.state.meanValue,
       variance: this.state.varianceValue,
-      noiseType: this.state.noiseTypeValue,
-      TimeValue: this.state.TimeValue,
-      SampleTimeValue: this.state.SampleTimeValue,
-      MassValue: this.state.MassValue,
-      LengthValue: this.state.LengthValue,
-      AngleValue: this.state.AngleValue,
-      FrictionValue: this.state.FrictionValue,
-      P_PValue: this.state.P_PValue,
-      PID_PValue: this.state.PID_PValue,
-      PID_IValue: this.state.PID_IValue,
-      PID_DValue: this.state.PID_DValue,
+      noise_type: this.state.noiseTypeValue,
     });
     if (response.data && response.data.array && response.data.array.signal) {
-      this.setState({chartData: response.data.array.signal}),
-      this.setState({defaultChartData: defaultChartData});
+      const samplingTime = response.data.sampling_time;
+      const signal = response.data.array.signal;
+      const noiseChartData = signal.map((element, i) => ({
+        step: i * samplingTime + samplingTime,
+        noise: element,
+      }))
+      
+      this.setState({noiseChartData});
     } else {
       this.setState({alertVisible: true});
       setTimeout(this.hideErrorAlert, 4000)
@@ -175,7 +267,6 @@ export default class HomePage extends Component {
 
   onClickNoiseResetButton = () => {
     this.setState({
-      sizeValue: this.props.sizeValue,
       meanValue: this.props.meanValue,
       varianceValue: this.props.varianceValue,
       noiseTypeValue: this.props.noiseTypeValue,
@@ -188,12 +279,19 @@ export default class HomePage extends Component {
       MassValue: this.props.MassValue,
       LengthValue: this.props.LengthValue,
       SampleTimeValue: this.props.SampleTimeValue,
-      Angle: this.props.AngleValue,
+      Timeout: this.props.Timeout,
       FrictionValue: this.props.FrictionValue,
       P_PValue: this.props.P_PValue,
       PID_PValue: this.props.PID_PValue,
       PID_IValue: this.props.PID_IValue,
       PID_DValue: this.props.PID_DValue,
+      MaxMomentValue: this.props.MaxMomentValue,
+      fuzzyErrorMin: this.props.fuzzyErrorMin,
+      fuzzyDerivativeMin: this.props.fuzzyDerivativeMin,
+      fuzzyControlMin: this.props.fuzzyControlMin,
+      fuzzyErrorMax: this.props.fuzzyErrorMax,
+      fuzzyDerivativeMax: this.props.fuzzyDerivativeMax,
+      fuzzyControlMax: this.props.fuzzyControlMax,
     });
   }
 
@@ -201,32 +299,43 @@ export default class HomePage extends Component {
     this.setState({alertVisible: false});
   }
 
-
-
   render() {
+    const p_error_abs_best = parseFloat(this.state.p_error_abs) === Math.min(this.state.p_error_abs, this.state.pid_error_abs, this.state.fuzzy_error_abs);
+    const pid_error_abs_best = parseFloat(this.state.pid_error_abs) === Math.min(this.state.p_error_abs, this.state.pid_error_abs, this.state.fuzzy_error_abs);
+    const fuzzy_error_abs_best = parseFloat(this.state.fuzzy_error_abs) === Math.min(this.state.p_error_abs, this.state.pid_error_abs, this.state.fuzzy_error_abs);
+
+    const p_error_square_best = parseFloat(this.state.p_error_square) === Math.min(this.state.p_error_square, this.state.pid_error_square, this.state.fuzzy_error_square);
+    const pid_error_square_best = parseFloat(this.state.pid_error_square) === Math.min(this.state.p_error_square, this.state.pid_error_square, this.state.fuzzy_error_square);
+    const fuzzy_error_square_best = parseFloat(this.state.fuzzy_error_square) === Math.min(this.state.p_error_square, this.state.pid_error_square, this.state.fuzzy_error_square);
+
+    const p_control_abs_best = parseFloat(this.state.p_control_abs) === Math.min(this.state.p_control_abs, this.state.pid_control_abs, this.state.fuzzy_control_abs);
+    const pid_control_abs_best = parseFloat(this.state.pid_control_abs) === Math.min(this.state.p_control_abs, this.state.pid_control_abs, this.state.fuzzy_control_abs);
+    const fuzzy_control_abs_best = parseFloat(this.state.fuzzy_control_abs) === Math.min(this.state.p_control_abs, this.state.pid_control_abs, this.state.fuzzy_control_abs);
+
+    const p_control_square_best = parseFloat(this.state.p_control_square) === Math.min(this.state.p_control_square, this.state.pid_control_square, this.state.fuzzy_control_square);
+    const pid_control_square_best = parseFloat(this.state.pid_control_square) === Math.min(this.state.p_control_square, this.state.pid_control_square, this.state.fuzzy_control_square);
+    const fuzzy_control_square_best = parseFloat(this.state.fuzzy_control_square) === Math.min(this.state.p_control_square, this.state.pid_control_square, this.state.fuzzy_control_square);
+
     return (
-      <div className='main-container' >
-      <div className='center padding-12 ' >
-
-        <Card>
-          <CardContent>
-              <h1>Symulacja sterowania wahadłem odwróconym</h1>
-
-          </CardContent>
-        </Card>
-
-      </div>
+      <div className='main-container'>
         {this.state.alertVisible && (
-          <AlertComponent
-            severity='warning'
-            title='Błąd'
-            description='Wprowadzono niepoprawne dane - '
-            strongDescription='sprawdź typy zmiennych!'
-          />
+          <div className='alert-container'>
+            <AlertComponent
+              severity='error'
+              title='Błąd'
+              description='Wprowadzono niepoprawne dane - '
+              strongDescription='sprawdź typy zmiennych!'
+            />
+          </div>
         )}
-
+        <div className='center padding-12 '>
+          <Card>
+            <CardContent>
+                <h1>Symulacja sterowania wahadłem odwróconym</h1>
+            </CardContent>
+          </Card>
+        </div>
         <div className='center padding-12 white'>
-
           <div className='padding-12'>
           <div className='center'>
           <h2>Odpowiedź obiektów</h2>
@@ -234,7 +343,7 @@ export default class HomePage extends Component {
           <div className='margin-left'>
             [°]
           </div>
-            <ChartComponent data={this.state.defaultChartData} width={800} height={250} />
+            <ChartComponent data={this.state.pendulumChartData} width={800} height={250} />
           <div className='margin-left-max'>
             [s]
           </div>
@@ -256,7 +365,7 @@ export default class HomePage extends Component {
            <div className='margin-left'>
             [M]
            </div>
-            <ChartComponent data={this.state.chartData} width={800} height={250} />
+            <ChartComponent data={this.state.noiseChartData} width={800} height={250} />
             <div className='margin-left-max'>
             [s]
           </div>
@@ -267,7 +376,7 @@ export default class HomePage extends Component {
               size='large'
               color='primary'
               onClick={this.onClickGenerateButton}>
-              Symuluj
+              Wygeneruj odpowiedzi obiektu
             </Button>
             </div>
             <div className="padding-space">
@@ -276,49 +385,54 @@ export default class HomePage extends Component {
               size='large'
               color='secondary'
               onClick={this.onClickResetButton}>
-              Resetuj
+              Resetuj ustawienia symulacji
             </Button>
             </div>
           </div>
 
           <div className='center padding-12 ' >
-                <h2>Parametry jakości sterowania</h2>
+            <h2>Parametry jakości sterowania</h2>
           </div>
-
 
           <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Parametr</TableCell>
+                  <TableCell>P</TableCell>
+                  <TableCell>PID</TableCell>
+                  <TableCell>Fuzzy</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                   <TableRow>
-                    <TableCell>Parametr</TableCell>
-                    <TableCell>P</TableCell>
-                    <TableCell>PID</TableCell>
-                    <TableCell>Fuzzy</TableCell>
-
+                    <TableCell>Całka z wartości bezwzględnej uchybu</TableCell>
+                    <TableCell><span className={p_error_abs_best ? 'best-parametr' : 'worse-parametr'}>{this.state.p_error_abs}</span></TableCell>
+                    <TableCell><span className={pid_error_abs_best ? 'best-parametr' : 'worse-parametr'}>{this.state.pid_error_abs}</span></TableCell>
+                    <TableCell><span className={fuzzy_error_abs_best ? 'best-parametr' : 'worse-parametr'}>{this.state.fuzzy_error_abs}</span></TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-
-                    <TableRow>
-                      <TableCell>Całka z wartości bezwzględnej uchybu</TableCell>
-                      <TableCell>{this.state.SampleTimeValue}</TableCell>
-                      <TableCell>{this.state.TimeValue}</TableCell>
-                      <TableCell>{this.state.AngleValue}</TableCell>
-
-                    </TableRow>
-
-                    <TableRow>
-                      <TableCell>Minimum energii</TableCell>
-                      <TableCell>{this.state.LengthValue}</TableCell>
-                      <TableCell>{this.state.SampleTimeValue}</TableCell>
-                      <TableCell>{this.state.P_PValue}</TableCell>
-
-                    </TableRow>
-
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
+                  <TableRow>
+                    <TableCell>Całka z kwadratu uchybu</TableCell>
+                    <TableCell><span className={p_error_square_best ? 'best-parametr' : 'worse-parametr'}>{this.state.p_error_square}</span></TableCell>
+                    <TableCell><span className={pid_error_square_best ? 'best-parametr' : 'worse-parametr'}>{this.state.pid_error_square}</span></TableCell>
+                    <TableCell><span className={fuzzy_error_square_best ? 'best-parametr' : 'worse-parametr'}>{this.state.fuzzy_error_square}</span></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Całka z wartości bezwzględnej sygnału starującego</TableCell>
+                    <TableCell><span className={p_control_abs_best ? 'best-parametr' : 'worse-parametr'}>{this.state.p_control_abs}</span></TableCell>
+                    <TableCell><span className={pid_control_abs_best ? 'best-parametr' : 'worse-parametr'}>{this.state.pid_control_abs}</span></TableCell>
+                    <TableCell><span className={fuzzy_control_abs_best ? 'best-parametr' : 'worse-parametr'}>{this.state.fuzzy_control_abs}</span></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Całka z kwadratu sygnału starującego</TableCell>
+                    <TableCell><span className={p_control_square_best ? 'best-parametr' : 'worse-parametr'}>{this.state.p_control_square}</span></TableCell>
+                    <TableCell><span className={pid_control_square_best ? 'best-parametr' : 'worse-parametr'}>{this.state.pid_control_square}</span></TableCell>
+                    <TableCell><span className={fuzzy_control_square_best ? 'best-parametr' : 'worse-parametr'}>{this.state.fuzzy_control_square}</span></TableCell>
+                  </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
 
 
 
@@ -340,7 +454,6 @@ export default class HomePage extends Component {
               value={this.state.TimeValue}
               onChange={this.onChangeTimeField}
             />
-
             <TextField
               label='Czas próbkowania'
               variant='outlined'
@@ -348,18 +461,27 @@ export default class HomePage extends Component {
               value={this.state.SampleTimeValue}
               onChange={this.onChangeSampleTimeField}
             />
-
             <TextField
-
-              label='Kąt zadany'
+              label='Opóźnienie (próbki)'
               variant='outlined'
               placeholder='Wpisz wartość'
-              value={this.state.AngleValue}
+              value={this.state.Timeout}
               onChange={this.onChangeMomentField}
             />
-            </div>
-            <div className='padding-enter'>
-            </div>
+          </div>
+          <div className='padding-enter'></div>
+          <div className='center'>
+            <TextField
+              multiline
+              rowsMax={3}
+              variant='outlined'
+              label='Moment maksymalny'
+              placeholder='Wpisz wartość'
+              value={this.state.MaxMomentValue}
+              onChange={this.onChangeMaxMomentField}
+            />
+          </div>
+          <div className='padding-enter'></div>
           <div className='center padding-x'>
             <h2>Parametry obiektu sterowania</h2>
           </div>
@@ -373,8 +495,7 @@ export default class HomePage extends Component {
               value={this.state.MassValue}
               onChange={this.onChangeMassField}
             />
-
-         <TextField
+            <TextField
               label='Długość wahadła'
               variant='outlined'
               placeholder='Wpisz wartość'
@@ -403,11 +524,10 @@ export default class HomePage extends Component {
               onChange={this.onChangeP_PField}
              />
             </div>
-            <div className='padding-enter'>
+            <div className='padding-enter'></div>
+            <div className='center padding-x'>
+              <h2>Nastawy regulatora PID</h2>
             </div>
-           <div className='center padding-x'>
-            <h2>Nastawy regulatora PID</h2>
-          </div>
             <div className='center'>
             <TextField
               multiline
@@ -418,7 +538,6 @@ export default class HomePage extends Component {
               value={this.state.PID_PValue}
               onChange={this.onChangePID_PField}
             />
-
             <TextField
               label='I'
               variant='outlined'
@@ -426,7 +545,6 @@ export default class HomePage extends Component {
               value={this.state.PID_IValue}
               onChange={this.onChangePID_IField}
             />
-
             <TextField
               label='D'
               variant='outlined'
@@ -435,37 +553,80 @@ export default class HomePage extends Component {
               onChange={this.onChangePID_DField}
             />
             </div>
+            <div className='padding-enter'></div>
+            <div className='center padding-x'>
+              <h2>Nastawy regulatora Fuzzy</h2>
+            </div>
+            <div className='center'>
+            <TextField
+              variant='outlined'
+              label='Uchyb minimalny'
+              placeholder='Wpisz wartość'
+              value={this.state.fuzzyErrorMin}
+              onChange={this.onChangeFuzzyErrorMin}
+            />
+            <TextField
+              label='Pochodna uchybu minimalna'
+              variant='outlined'
+              placeholder='Wpisz wartość'
+              value={this.state.fuzzyDerivativeMin}
+              onChange={this.onChangeFuzzyDerivativeMin}
+            />
+            <TextField
+              label='Sygnał sterujący minimalny'
+              variant='outlined'
+              placeholder='Wpisz wartość'
+              value={this.state.fuzzyControlMin}
+              onChange={this.onChangeFuzzyControlMin}
+            />
+            </div>
+            <div className='padding-enter'></div>
+            <div className='center'>
+            <TextField
+              variant='outlined'
+              label='Uchyb maksymalny'
+              placeholder='Wpisz wartość'
+              value={this.state.fuzzyErrorMax}
+              onChange={this.onChangeFuzzyErrorMax}
+            />
+            <TextField
+              label='Pochodna uchybu maksymalna'
+              variant='outlined'
+              placeholder='Wpisz wartość'
+              value={this.state.fuzzyDerivativeMax}
+              onChange={this.onChangeFuzzyDerivativeMax}
+            />
+            <TextField
+              label='Sygnał sterujący maksymalny'
+              variant='outlined'
+              placeholder='Wpisz wartość'
+              value={this.state.fuzzyControlMax}
+              onChange={this.onChangeFuzzyControlMax}
+            />
+            </div>
             <div className='padding-enter'>
             </div>
             <div className='center padding-x'>
             <h2>Parametry szumu</h2>
            </div>
             <div className='center'>
+
             <TextField
               multiline
               rowsMax={3}
               variant='outlined'
               label='Wartość średnia'
               placeholder='Wpisz wartość'
-              value={this.state.sizeValue}
-              onChange={this.onChangeSizeField}
+              value={this.state.meanValue}
+              onChange={this.onChangeMeanField}
             />
-
             <TextField
               label='Skala'
               variant='outlined'
               placeholder='Wpisz wartość'
-              value={this.state.meanValue}
-              onChange={this.onChangeMeanField}
+              value={this.state.varianceValue}
+              onChange={this.onChangeVarianceField}
             />
-            </div>
-            <div className='padding-enter'>
-            </div>
-           <div className='center padding-x'>
-           <h2>Typ szumu</h2>
-           </div>
-            <div className='center'>
-            <div className=' padding-select'>
             <SelectField
               label='Typ szumu'
               size='large'
@@ -474,19 +635,16 @@ export default class HomePage extends Component {
               onChange={this.onChangeNoiseTypeField}
             />
             </div>
-            </div>
             <div className='padding-enter'>
             </div>
-
             <div className='center padding-x'>
-
             <div className="padding-space">
 
             <Button
               variant='contained'
               size='large'
               color='primary'
-              onClick={this.onClickGenerateButton}>
+              onClick={this.onClickGenerateNoiseButton}>
               Wygeneruj sygnał szumu
             </Button>
             </div>
@@ -496,43 +654,54 @@ export default class HomePage extends Component {
               size='large'
               color='secondary'
               onClick={this.onClickNoiseResetButton}>
-              Resetuj ustawienia
+              Resetuj ustawienia szumu
             </Button>
             </div>
-
-
           </div>
-
           </div>
-
         </div>
-
         <div className='center padding-12'>
-
           </div>
-
       </div>
     );
   }
 
 
   static defaultProps = {
-    sizeValue: '1000',
-    TimeValue: '25',
-    SampleTimeValue: '30',
-    MassValue: '10',
-    LengthValue: '15',
-    AngleValue: '5',
-    FrictionValue: '0.5',
-    P_PValue: '3',
-    PID_PValue: '2',
-    PID_IValue: '4',
-    PID_DValue: '1',
+    TimeValue: '50',
+    SampleTimeValue: '0.05',
+    MassValue: '0.2',
+    LengthValue: '0.6',
+    Timeout: '0',
+    FrictionValue: '0.05',
+    MaxMomentValue: '0.3',
+    P_PValue: '1.1',
+    PID_PValue: '1.3',
+    PID_IValue: '0.001',
+    PID_DValue: '0.11',
     meanValue: '0',
-    varianceValue: '1',
-    noiseTypeValue: noiseTypeCurrencies[0].value,
+    varianceValue: '0.03',
+    noiseTypeValue: noiseTypeCurrencies[1].value,
     alertVisible: false,
-    chartData: defaultChartData,
+    noiseChartData: defaultChartData,
+    pendulumChartData: defaultChartData,
+    p_error_abs: '0',
+    p_error_square: '0',
+    p_control_abs: '0',
+    p_control_square: '0',
+    pid_error_abs: '0',
+    pid_error_square: '0',
+    pid_control_abs: '0',
+    pid_control_square: '0',
+    fuzzy_error_abs: '0',
+    fuzzy_error_square: '0',
+    fuzzy_control_abs: '0',
+    fuzzy_control_square: '0',
+    fuzzyErrorMin: '-0.15',
+    fuzzyDerivativeMin: '-0.5',
+    fuzzyControlMin: '-0.1',
+    fuzzyErrorMax: '0.15',
+    fuzzyDerivativeMax: '0.5',
+    fuzzyControlMax: '0.1',
   }
-
 }
