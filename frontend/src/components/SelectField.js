@@ -1,5 +1,5 @@
+import { TextField } from '@material-ui/core';
 import React from 'react';
-import {TextField} from '@material-ui/core';
 
 
 const SelectField = ({
@@ -12,7 +12,7 @@ const SelectField = ({
   onChange = defaultProps.onChange,
 }) => {
   return (
-    <div className='button-background'>
+    <div className='select-field'>
       <TextField
         select
         fullWidth
